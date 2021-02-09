@@ -1,6 +1,7 @@
 import { CsvFileReader } from './CsvFileReader';
 import { parseDate } from './utils';
 import { MatchResult } from './MatchResult';
+
 type MatchData = [
 	Date,
 	string,
@@ -10,7 +11,11 @@ type MatchData = [
 	MatchResult,
 	string
 ];
-export class MatchReader extends CsvFileReader {
+
+export class MatchReader extends CsvFileReader<MatchData> {
+	constructor(public path: string) {
+		super(path);
+	}
 	rowMap(row: string[]): MatchData {
 		return [
 			parseDate(row[0]),
