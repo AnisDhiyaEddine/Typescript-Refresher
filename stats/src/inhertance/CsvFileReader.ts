@@ -1,9 +1,10 @@
 import fs from 'fs';
 
-export class CsvFileReader {
-	public data: string[][] = [];
+export abstract class CsvFileReader<T> {
+	abstract rowMap(row: string[]): T;
+	public data: T[] = [];
 	constructor(public filename: string) {}
-	read(): void {
+	read() {
 		this.data = fs
 			.readFileSync('football.csv', {
 				encoding: 'utf-8',
@@ -11,6 +12,7 @@ export class CsvFileReader {
 			.split('\n')
 			.map((row: string): string[] => {
 				return row.split(',');
-			});
+			})
+			.map(this.rowMap);
 	}
 }
