@@ -1,12 +1,14 @@
+import axios, { AxiosResponse } from 'axios';
+import { Eventing } from './Eventing';
+
 interface userProps {
+	id?: number;
 	name?: string;
 	age?: number;
 }
 
-type Callback = () => void; //Type alias
 export class User {
-	events: { [key: string]: Callback[] } = {};
-
+	public events: Eventing = new Eventing();
 	constructor(private data: userProps) {}
 	get(propName: string): number | string {
 		return this.data[propName];
@@ -16,15 +18,32 @@ export class User {
 		Object.assign(this.data, data);
 	}
 
-	on(eventName: string, callback: Callback): void {
-		let handlers = this.events[eventName] || [];
-		handlers.push(callback);
-		this.events[eventName] = handlers;
+	fetch(): void {
+		axios
+			.get(
+				`http://localhost:3000/users/${this.get(
+					'id',
+				)}`,
+			)
+			.then((response: AxiosResponse) => {
+				this.set(response.data);
+			});
 	}
 
-	trigger(eventName: string): void {
-		let handlers = this.events[eventName] || [];
-		if (!handlers.length) return;
-		handlers.forEach((callback) => callback());
+	save(): void {
+		if (this.get('id')) {
+			// Put request
+			axios.put(
+				`http://localhost:3000/users/${this.get(
+					'id',
+				)}`,
+				this.data,
+			);
+		} else {
+			axios.post(
+				'http://localhost:3000/users',
+				this.data,
+			);
+		}
 	}
 }
