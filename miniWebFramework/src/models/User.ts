@@ -1,6 +1,7 @@
 import { Attributes } from './Attributes';
 import { Eventing } from './Eventing';
-import { Sync } from './Sync';
+import { Model } from './Model';
+import { Sync } from './ApiSync';
 
 export interface userProps {
 	id?: number;
@@ -9,14 +10,13 @@ export interface userProps {
 }
 
 const rootUrl = 'http://localhost:3000/users';
-export class User {
-	public events: Eventing = new Eventing();
-	public sync: Sync<userProps> = new Sync<userProps>(
-		rootUrl,
-	);
-	public attributes: Attributes<userProps>;
 
-	constructor(attrs: userProps) {
-		this.attributes = new Attributes<userProps>(attrs);
+export class User extends Model<userProps> {
+	static buildUser(attrs: userProps): User {
+		return new User(
+			new Eventing(),
+			new Attributes<userProps>(attrs),
+			new Sync<userProps>(rootUrl),
+		);
 	}
 }
