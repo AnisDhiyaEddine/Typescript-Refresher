@@ -1,4 +1,4 @@
-import {
+/* import {
 	Router,
 	Response,
 	Request,
@@ -26,23 +26,6 @@ router.get('/', (req: Request_body, res: Response) => {
 	if (req.session && req.session.loggedIn)
 		res.send("hello khaoula you're in");
 	res.send('You must login :(');
-});
-
-router.get('/login', (req: Request_body, res: Response) => {
-	res.send(`
-  <form method="post">
-  <div> 
-  <label>Email</label>
-  <input name="email" />
-  </div>
- 
-  <div>
-  <label>Password</label>
-  <input name="password" type="password"/>
-  </div>
-   <button>Submit<button/>
-  </form>
-  `);
 });
 
 router.post(
@@ -75,3 +58,4 @@ router.get(
 	},
 );
 export { router };
+ */
